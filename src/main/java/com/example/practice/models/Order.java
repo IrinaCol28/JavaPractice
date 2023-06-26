@@ -9,7 +9,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     public int getAmount() {
         return amount;
     }

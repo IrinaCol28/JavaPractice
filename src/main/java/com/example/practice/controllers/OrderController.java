@@ -55,24 +55,24 @@ public class OrderController {
             @ApiResponse(responseCode = "201", description = "Order created",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Order.class),
-                            examples = @ExampleObject(value = "{\n" +
-                                    "  \"id\": 1,\n" +
-                                    "  \"amount\": 1,\n" +
-                                    "  \"product\": {\n" +
-                                    "    \"id\": 1,\n" +
-                                    "    \"name\": \"Test\",\n" +
-                                    "    \"quantity\": 5,\n" +
-                                    "    \"cost\": 100\n" +
-                                    "  },\n" +
-                                    "  \"customer\": {\n" +
-                                    "    \"id\": 1,\n" +
-                                    "    \"name\": \"User\",\n" +
-                                    "    \"email\": \"test123@gmail.com\",\n" +
-                                    "    \"phone\": \"88005553535\"\n" +
-                                    "  },\n" +
-                                    "  \"productId\": 1,\n" +
-                                    "  \"customerId\": 1\n" +
-                                    "}")
+                            examples = @ExampleObject(value = "{\n"
+                                    + "  \"id\": 1,\n"
+                                    + "  \"amount\": 1,\n"
+                                    + "  \"product\": {\n"
+                                    + "    \"id\": 1,\n"
+                                    + "    \"name\": \"Test\",\n"
+                                    + "    \"quantity\": 5,\n"
+                                    + "    \"cost\": 100\n"
+                                    + "  },\n"
+                                    + "  \"customer\": {\n"
+                                    + "    \"id\": 1,\n"
+                                    + "    \"name\": \"User\",\n"
+                                    + "    \"email\": \"test123@gmail.com\",\n"
+                                    + "    \"phone\": \"88005553535\"\n"
+                                    + "  },\n"
+                                    + "  \"productId\": 1,\n"
+                                    + "  \"customerId\": 1\n"
+                                    + "}")
                     )
             ),
             @ApiResponse(responseCode = "404", description = "Order not created")
