@@ -1,4 +1,5 @@
 package com.example.practice.controllers;
+import com.example.practice.models.Order;
 import com.example.practice.models.Product;
 import com.example.practice.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,7 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -31,8 +35,15 @@ public class ProductController {
     )
     @ApiResponse(responseCode = "404", description = "Product not found")
     @GetMapping("/{id}")
-    public Product getProduct(@Parameter(description = "ID of the product") @PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProduct(@Parameter(description = "ID of the product") @PathVariable Long id) {
+        Product product=productService.getProductById(id);
+        if (product != null) {
+            log.info(" Product with ID: '{}' found", id);
+            return ResponseEntity.ok().body(product);
+        } else {
+            log.info(" Product with ID: '{}' not found", id);
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Operation(summary = "Get all products")
@@ -46,7 +57,13 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok().body(products);
+        if (products != null) {
+            log.info(" Products found");
+            return ResponseEntity.ok().body(products);
+        } else {
+            log.info(" Products not found");
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Operation(summary = "Create a new product")
@@ -58,8 +75,17 @@ public class ProductController {
     )
     @ApiResponse(responseCode = "404", description = "Product not created")
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        log.info("Product created:{}", product.getName());
+        if (product != null) {
+            log.info("Product created:{}", product.getName());
+            productService.saveProduct(product);
+            return ResponseEntity.ok().body(product);
+        } else {
+            log.info("Product not created");
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @Operation(summary = "Delete a product by ID")
@@ -69,8 +95,10 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@Parameter(description = "ID of the product") @PathVariable Long id) {
         boolean deleted = productService.deleteProduct(id);
         if (!deleted) {
+            log.info("Product deleted:{}",productService.getProductById(id).getName());
             return ResponseEntity.noContent().build();
         } else {
+            log.info("Product not deleted");
             return ResponseEntity.notFound().build();
         }
     }
@@ -89,18 +117,12 @@ public class ProductController {
             @Parameter(description = "New quantity value") @RequestParam int quantity) {
         Product product = productService.updateProductQuantity(id, quantity);
         if (product != null) {
+            log.info("Update product quantity:{}",productService.getProductById(id).getName());
             return ResponseEntity.ok().body(product);
         } else {
+            log.info("Update product quantity canceled. Product not found");
             return ResponseEntity.notFound().build();
         }
     }
 
 }
-//    @GetMapping
-//    public Product createProduct( ){
-//    Product product=new Product();
-//        product.setName("Test");
-//        product.setCost(100);
-//        product.setQuantity(5);
-//        return productService.saveProduct(product);
-//    }

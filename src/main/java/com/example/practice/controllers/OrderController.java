@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ public class OrderController {
     private final OrderService orderService;
     private final CustomerService customerService;
     private final ProductService productService;
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public OrderController(OrderService orderService, CustomerService customerService, ProductService productService) {
@@ -44,8 +47,10 @@ public class OrderController {
     public ResponseEntity<Order> getOrder(@Parameter(description = "ID of the order") @PathVariable Long id) {
         Order order = orderService.getOrderById(id);
         if (order != null) {
+            log.info("Order with ID: '{}' found", id);
             return ResponseEntity.ok().body(order);
         } else {
+            log.info("Order with ID: '{}' not found", id);
             return ResponseEntity.notFound().build();
         }
     }
@@ -82,31 +87,29 @@ public class OrderController {
         Long customerId = order.getCustomerId();
         Long productId = order.getProductId();
         int quantity = order.getAmount();
-
-        // Покупатель не существует
         Customer customer = customerService.getCustomerById(customerId);
         if (customer == null) {
+            log.info("Order not created. Customer with id:'{}' doesn't exist", customerId);
             return ResponseEntity.notFound().build();
         }
-
-        // Продукт не существует
         Product product = productService.getProductById(productId);
         if (product == null) {
+            log.info("Order not created. Product with id:'{}' doesn't exist", productId);
             return ResponseEntity.notFound().build();
         }
-
-        // Хватит ли продукта
         if (product.getQuantity() < quantity) {
+            log.info("Order not created. The amount of product is less than required", productId);
             return ResponseEntity.notFound().build();
         }
-
-        // Создаем заказ
         Order createdOrder = orderService.saveOrder(order);
+        log.info("Order created:{}", productId);
+        log.info("Customer ID: {}", order.getCustomerId());
+        log.info("Product ID: {}", order.getProductId());
+        log.info("Quantity: {}", order.getAmount());
 
-        // Меняем количество оставшегося проукта
         product.setQuantity(product.getQuantity() - quantity);
         productService.saveProduct(product);
-
+        log.info("The amount of the remaining product has been changed.Current product number:'{}' ", order.getProduct().getQuantity());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
@@ -117,19 +120,11 @@ public class OrderController {
     public ResponseEntity<Void> deleteOrder(@Parameter(description = "ID of the order") @PathVariable Long id) {
         boolean deleted = orderService.deleteOrder(id);
         if (!deleted) {
+            log.info("Order with id:'{}' deleted", id);
             return ResponseEntity.noContent().build();
         } else {
+            log.info("Order with id:'{}' not deleted. Order not found", id);
             return ResponseEntity.notFound().build();
         }
     }
 }
-
-
-//    @GetMapping
-//    public Order createOrder( ) {
-//        Order order=new Order();
-//        order.setProduct(productService.getProductById(Long.valueOf(1)));
-//        order.setCustomer(customerService.getCustomerById(Long.valueOf(1)));
-//order.setAmount(10);
-//        return orderService.saveOrder(order);
-//    }

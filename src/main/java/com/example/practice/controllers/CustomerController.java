@@ -3,6 +3,8 @@ package com.example.practice.controllers;
 import com.example.practice.models.Customer;
 import com.example.practice.services.CustomerService;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/customers")
 public class CustomerController {
     private final CustomerService customerService;
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public CustomerController(CustomerService customerService) {
@@ -34,8 +37,10 @@ public class CustomerController {
     public ResponseEntity<Customer> getCustomer(@Parameter(description = "ID of the customer") @PathVariable Long id) {
         Customer customer = customerService.getCustomerById(id);
         if (customer != null) {
+            log.info("Customer with ID: '{}' found", id);
             return ResponseEntity.ok().body(customer);
         } else {
+            log.info("Customer with ID: '{}' not found", id);
             return ResponseEntity.notFound().build();
         }
     }
@@ -50,7 +55,13 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
         Customer createdCustomer = customerService.saveCustomer(customer);
-        return ResponseEntity.status(201).body(createdCustomer);
+        if (customer != null) {
+            log.info("Customer with name: {} created", createdCustomer.getName());
+            return ResponseEntity.ok().body(createdCustomer);
+        } else {
+            log.info("Customer not created");
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Operation(summary = "Delete a customer by ID")
@@ -60,18 +71,11 @@ public class CustomerController {
     public ResponseEntity<Void> deleteCustomer(@Parameter(description = "ID of the customer") @PathVariable Long id) {
         boolean deleted = customerService.deleteCustomer(id);
         if (!deleted) {
+            log.info("Customer with ID: '{}' deleted", id);
             return ResponseEntity.noContent().build();
         } else {
+            log.info("Customer with ID: '{}' not deleted", id);
             return ResponseEntity.notFound().build();
         }
     }
 }
-
-//    @GetMapping
-//    public Customer createCustomer() {
-//        Customer product=new Customer();
-//        product.setName("User");
-//        product.setEmail("test123@gmail.com");
-//        product.setPhone("88005553535");
-//        return customerService.saveCustomer(product);
-//    }
