@@ -1,44 +1,45 @@
-# —истема формировани€ заказа
+# Order formation system
 
 
-## ‘ункции
+## Functions
 ___
-ƒанный проект реализует систему формировани€ заказа, котора€ позвол€ет пользователю указать товар и покупател€ дл€ создани€ заказа. —истема провер€ет наличие указанного товара на складе и наличие покупател€ в списке покупателей.
+This project implements an order formation system that allows the user to specify a product and a customer to create an order. The system checks the presence of the specified product in the warehouse and the presence of the buyer in the list of buyers.
 
-## ¬ходные данные
+## Input data
 ___
-—ервис принимает запрос с Body, содержащим следующие данные:
+The service accepts a request with a Body containing the following data:
 
-ѕокупатель (Customer)
+Buyer
 
-- [ ] »м€ (Name) - строка, указывающа€ им€ покупател€.
-- [ ] Email - строка, указывающа€ адрес электронной почты покупател€.
-- [ ] “елефон (Phone) - строка, указывающа€ номер телефона покупател€.
+- [ ] Name (Name) - a string indicating the name of the buyer.
+- [ ] Email - a string indicating the buyer's e-mail address.
+- [ ] Phone - a string indicating the customer's phone number.
 
-“овар (Product)
+Product
 
-- [ ] Ќазвание (Name) - строка, указывающа€ название товара.
-- [ ]  оличество (Quantity) - числовое значение, указывающее желаемое количество товара.
-- [ ] —тоимость (Cost) - числовое значение, указывающее стоимость товара.
-- [ ]  оличество (Amount) - числовое значение, указывающее количество товара.
+- [ ] Name - a string indicating the name of the item.
+- [ ] Quantity - a numeric value indicating the desired quantity of the product.
+- [ ] Cost - a numeric value indicating the cost of the item.
+- [ ] Amount - a numeric value indicating the amount of goods.
 
-## ¬ыходные данные
+## Output
 ___
-Ќа выходе формируетс заказ (Order), содержащий следующие данные:
+At the output, an Order is generated containing the following data:
 
-- [ ]  оличество (Amount) - строка, указывающа€ количество товара в заказе.
-- [ ] ѕродукт (Product) - строка, указывающа€ тип товара в заказе.
-- [ ] ѕокупатель (Customer) - строка, указывающа€ на заказчика.
+- [ ] Amount - a string indicating the quantity of goods in the order.
+- [ ] Product - a string indicating the type of product in the order.
+- [ ] Customer (Customer) - a string indicating the customer.
 
-## Ћогика работы
+## Operation logic
 ___
-—ервис получает запрос с данными о покупателе и товаре.
-ѕровер€етс€ наличие указанного товара в списке товаров на складе.
-ѕровер€етс€ наличие указанного покупател€ в списке покупателей.
-≈сли товар и покупатель присутствуют в соответствующих списках, заказ считаетс€ успешно сформированным.
-¬ противном случае возвращаетс€ ошибка, указывающа€ на отсутствие товара или покупател€.
+The service receives a request with data about the buyer and the product.
+The presence of the specified product in the list of products in the warehouse is checked.
+Checks whether the specified buyer is in the list of buyers.
+If the goods and the buyer are present in the respective lists, the order is considered to be successfully formed.
+Otherwise, an error is returned indicating that there is no product or customer.
 
-## »спользуютс€
+## Are used
+
 ___
 - Postgre SQL
 - Spring Boot
