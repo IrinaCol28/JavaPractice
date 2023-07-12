@@ -14,7 +14,6 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    // Методы сервиса для выполнения операций с покупателями
 
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id).orElse(null);

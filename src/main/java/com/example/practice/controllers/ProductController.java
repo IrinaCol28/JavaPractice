@@ -1,5 +1,5 @@
 package com.example.practice.controllers;
-import com.example.practice.models.Order;
+
 import com.example.practice.models.Product;
 import com.example.practice.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,10 +76,10 @@ public class ProductController {
     @ApiResponse(responseCode = "404", description = "Product not created")
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        log.info("Product created:{}", product.getName());
+        productService.saveProduct(product);
         if (product != null) {
             log.info("Product created:{}", product.getName());
-            productService.saveProduct(product);
+            log.info("Product created:{}", product.getId());
             return ResponseEntity.ok().body(product);
         } else {
             log.info("Product not created");
@@ -95,7 +95,7 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@Parameter(description = "ID of the product") @PathVariable Long id) {
         boolean deleted = productService.deleteProduct(id);
         if (!deleted) {
-            log.info("Product deleted:{}",productService.getProductById(id).getName());
+            log.info("Product deleted");
             return ResponseEntity.noContent().build();
         } else {
             log.info("Product not deleted");
@@ -117,7 +117,7 @@ public class ProductController {
             @Parameter(description = "New quantity value") @RequestParam int quantity) {
         Product product = productService.updateProductQuantity(id, quantity);
         if (product != null) {
-            log.info("Update product quantity:{}",productService.getProductById(id).getName());
+            log.info("Update product quantity");
             return ResponseEntity.ok().body(product);
         } else {
             log.info("Update product quantity canceled. Product not found");

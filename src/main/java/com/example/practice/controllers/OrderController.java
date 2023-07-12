@@ -102,15 +102,15 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
         Order createdOrder = orderService.saveOrder(order);
-        log.info("Order created:{}", productId);
-        log.info("Customer ID: {}", order.getCustomerId());
-        log.info("Product ID: {}", order.getProductId());
-        log.info("Quantity: {}", order.getAmount());
+        log.info("Order created:{}", order.getId());
+//        log.info("Customer ID: {}", createdOrder.getCustomerId());
+//        log.info("Product ID: {}", createdOrder.getProductId());
+//        log.info("Quantity: {}", createdOrder.getAmount());
 
         product.setQuantity(product.getQuantity() - quantity);
         productService.saveProduct(product);
         log.info("The amount of the remaining product has been changed.Current product number:'{}' ", order.getProduct().getQuantity());
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+        return ResponseEntity.ok().body(order);
     }
 
     @Operation(summary = "Delete an order by ID")

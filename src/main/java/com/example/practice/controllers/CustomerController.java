@@ -1,6 +1,7 @@
 package com.example.practice.controllers;
 
 import com.example.practice.models.Customer;
+import com.example.practice.models.Product;
 import com.example.practice.services.CustomerService;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.slf4j.Logger;
@@ -54,14 +55,16 @@ public class CustomerController {
     )
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
-        Customer createdCustomer = customerService.saveCustomer(customer);
+        customerService.saveCustomer(customer);
         if (customer != null) {
-            log.info("Customer with name: {} created", createdCustomer.getName());
-            return ResponseEntity.ok().body(createdCustomer);
+            log.info("Customer created:{}", customer.getName());
+            log.info("Customer created:{}", customer.getId());
+            return ResponseEntity.ok().body(customer);
         } else {
             log.info("Customer not created");
             return ResponseEntity.notFound().build();
         }
+
     }
 
     @Operation(summary = "Delete a customer by ID")
