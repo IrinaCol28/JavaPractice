@@ -14,7 +14,6 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id).orElse(null);
     }

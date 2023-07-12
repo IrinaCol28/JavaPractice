@@ -26,7 +26,7 @@ public class OrderController {
     private final OrderService orderService;
     private final CustomerService customerService;
     private final ProductService productService;
-    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public OrderController(OrderService orderService, CustomerService customerService, ProductService productService) {
@@ -47,10 +47,10 @@ public class OrderController {
     public ResponseEntity<Order> getOrder(@Parameter(description = "ID of the order") @PathVariable Long id) {
         Order order = orderService.getOrderById(id);
         if (order != null) {
-            log.info("Order with ID: '{}' found", id);
+            LOG.info("Order with ID: '{}' found", id);
             return ResponseEntity.ok().body(order);
         } else {
-            log.info("Order with ID: '{}' not found", id);
+            LOG.info("Order with ID: '{}' not found", id);
             return ResponseEntity.notFound().build();
         }
     }
@@ -89,27 +89,24 @@ public class OrderController {
         int quantity = order.getAmount();
         Customer customer = customerService.getCustomerById(customerId);
         if (customer == null) {
-            log.info("Order not created. Customer with id:'{}' doesn't exist", customerId);
+            LOG.info("Order not created. Customer with id:'{}' doesn't exist", customerId);
             return ResponseEntity.notFound().build();
         }
         Product product = productService.getProductById(productId);
         if (product == null) {
-            log.info("Order not created. Product with id:'{}' doesn't exist", productId);
+            LOG.info("Order not created. Product with id:'{}' doesn't exist", productId);
             return ResponseEntity.notFound().build();
         }
         if (product.getQuantity() < quantity) {
-            log.info("Order not created. The amount of product is less than required", productId);
+            LOG.info("Order not created. The amount of product is less than required", productId);
             return ResponseEntity.notFound().build();
         }
         Order createdOrder = orderService.saveOrder(order);
-        log.info("Order created:{}", order.getId());
-//        log.info("Customer ID: {}", createdOrder.getCustomerId());
-//        log.info("Product ID: {}", createdOrder.getProductId());
-//        log.info("Quantity: {}", createdOrder.getAmount());
+        LOG.info("Order created:{}", order.getId());
 
         product.setQuantity(product.getQuantity() - quantity);
         productService.saveProduct(product);
-        log.info("The amount of the remaining product has been changed.Current product number:'{}' ", order.getProduct().getQuantity());
+        LOG.info("The amount of the remaining product has been changed.Current product number:'{}' ", order.getProduct().getQuantity());
         return ResponseEntity.ok().body(order);
     }
 
@@ -120,10 +117,10 @@ public class OrderController {
     public ResponseEntity<Void> deleteOrder(@Parameter(description = "ID of the order") @PathVariable Long id) {
         boolean deleted = orderService.deleteOrder(id);
         if (!deleted) {
-            log.info("Order with id:'{}' deleted", id);
+            LOG.info("Order with id:'{}' deleted", id);
             return ResponseEntity.noContent().build();
         } else {
-            log.info("Order with id:'{}' not deleted. Order not found", id);
+            LOG.info("Order with id:'{}' not deleted. Order not found", id);
             return ResponseEntity.notFound().build();
         }
     }

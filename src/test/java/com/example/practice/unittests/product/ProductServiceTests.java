@@ -1,4 +1,4 @@
-package com.example.practice.unitTestsForBusinessLogic.productTest;
+package com.example.practice.unittests.product;
 
 import com.example.practice.models.Product;
 import com.example.practice.repositories.ProductRepository;

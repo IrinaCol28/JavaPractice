@@ -1,4 +1,4 @@
-package com.example.practice.unitTestsForBusinessLogic.orderTest;
+package com.example.practice.unittests.order;
 
 import com.example.practice.models.Customer;
 import com.example.practice.models.Order;

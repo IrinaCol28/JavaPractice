@@ -1,4 +1,4 @@
-package com.example.practice.unitTestsForBusinessLogic.orderTest;
+package com.example.practice.unittests.order;
 
 import com.example.practice.models.Customer;
 import com.example.practice.models.Order;
@@ -41,6 +41,7 @@ public class OrderControllerTests {
 
     @Autowired
     private ProductRepository productRepository;
+
     @Test
     public void testGetOrder() {
         Order order = new Order();
@@ -96,7 +97,6 @@ public class OrderControllerTests {
 
         order.setCustomer(savedCustomer);
         order.setProduct(savedProduct);
-
 
         when(customerService.getCustomerById(order.getCustomerId())).thenReturn(savedCustomer);
         when(productService.getProductById(order.getProductId())).thenReturn(savedProduct);

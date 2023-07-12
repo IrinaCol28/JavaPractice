@@ -1,4 +1,4 @@
-package com.example.practice.unitTestsForBusinessLogic.productTest;
+package com.example.practice.unittests.product;
 
 import com.example.practice.models.Product;
 import com.example.practice.services.ProductService;
@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
