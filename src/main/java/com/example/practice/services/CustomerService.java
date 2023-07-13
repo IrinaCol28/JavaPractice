@@ -1,9 +1,12 @@
 package com.example.practice.services;
 
 import com.example.practice.models.Customer;
+import com.example.practice.models.Product;
 import com.example.practice.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CustomerService {
@@ -25,5 +28,8 @@ public class CustomerService {
     public boolean deleteCustomer(Long id) {
         customerRepository.deleteById(id);
         return false;
+    }
+    public List<Customer> getAllCustomer() {
+        return customerRepository.findAll();
     }
 }
