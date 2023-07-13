@@ -29,6 +29,7 @@ public class CustomerService {
         customerRepository.deleteById(id);
         return false;
     }
+
     public List<Customer> getAllCustomer() {
         return customerRepository.findAll();
     }

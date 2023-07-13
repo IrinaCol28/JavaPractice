@@ -50,16 +50,13 @@ public class OrderScheduler {
         String customerEmail = randomCustomer.getEmail();
         LOG.info("Order with id:'{}' planner", order.getId());
         String emailSubject = "Уведомление о заказе";
-        if(order!=null)
-        {
+        if (order != null) {
             emailContent = "Ваш заказ успешно поставлен в очередь для выполнения.";
-        }
-        else {
+        } else {
             emailContent = "Ваш заказ невозможно выполнить.";
         }
 
         emailService.sendEmail(customerEmail, emailSubject, emailContent);
-
 
     }
 

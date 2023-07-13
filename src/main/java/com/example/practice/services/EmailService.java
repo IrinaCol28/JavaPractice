@@ -14,10 +14,10 @@ import java.util.Properties;
 public class EmailService {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailService.class);
+
     public void sendEmail(String recipientEmail, String subject, String content) {
-        // Настройте свои параметры SMTP-сервера
         String host = "smtp.elasticemail.com";
-        int port = 2525 ;
+        int port = 2525;
         String username = "irina.col2828@gmail.com";
         String password = "D8CA5E117455C883BFF7AAB9664267C80115";
 
