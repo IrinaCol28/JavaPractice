@@ -1,4 +1,4 @@
-package com.example.practice.unittests.customer;
+package com.example.practice.unit.customer;
 
 import com.example.practice.models.Customer;
 import com.example.practice.repositories.CustomerRepository;
