@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,7 +57,7 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
     }
-
+/*
     @Operation(summary = "Create a new order")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Order created",
@@ -101,6 +102,26 @@ public class OrderController {
 
         OrderDTO createdOrderDTO = OrderMapper.INSTANCE.orderToDTO(createdOrder);
         return ResponseEntity.ok().body(createdOrderDTO);
+    }*/
+
+    @Operation(summary = "Заказ поставлен в очередь")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Order created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderDTO.class),
+                            examples = @ExampleObject(value = "{\n"
+                                    + "  \"id\": 1,\n"
+                                    + "  \"amount\": 1,\n"
+                                    + "  \"productId\": 1,\n"
+                                    + "  \"customerId\": 1\n"
+                                    + "}")
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "Order not created")
+    })
+   @PostMapping("/place")
+    public ResponseEntity<String> placeOrder() {
+    return ResponseEntity.status(HttpStatus.CREATED).body("Заказ поставлен в очередь.");
     }
 
     @Operation(summary = "Delete an order by ID")
