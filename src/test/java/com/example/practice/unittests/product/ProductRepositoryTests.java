@@ -15,14 +15,14 @@ public class ProductRepositoryTests {
     @Test
     public void testSaveProduct() {
         Product product = new Product();
-        product.setName("Название продукта");
+        product.setName("NewProduct");
         product.setQuantity(10);
         product.setCost(100);
 
         Product savedProduct = productRepository.save(product);
 
         Assertions.assertNotNull(savedProduct.getId());
-        Assertions.assertEquals("Название продукта", savedProduct.getName());
+        Assertions.assertEquals("NewProduct", savedProduct.getName());
         Assertions.assertEquals(10, savedProduct.getQuantity());
         Assertions.assertEquals(100, savedProduct.getCost());
     }
@@ -30,7 +30,7 @@ public class ProductRepositoryTests {
     @Test
     public void testFindProductById() {
         Product product = new Product();
-        product.setName("Название продукта");
+        product.setName("NewProduct");
         product.setQuantity(10);
         product.setCost(100);
 
@@ -39,7 +39,7 @@ public class ProductRepositoryTests {
         Product foundProduct = productRepository.findById(savedProduct.getId()).orElse(null);
 
         Assertions.assertNotNull(foundProduct);
-        Assertions.assertEquals("Название продукта", foundProduct.getName());
+        Assertions.assertEquals("NewProduct", foundProduct.getName());
         Assertions.assertEquals(10, foundProduct.getQuantity());
         Assertions.assertEquals(100, foundProduct.getCost());
     }
@@ -47,7 +47,7 @@ public class ProductRepositoryTests {
     @Test
     public void testDeleteProduct() {
         Product product = new Product();
-        product.setName("Название продукта");
+        product.setName("NewProduct");
         product.setQuantity(10);
         product.setCost(100);
 

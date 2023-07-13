@@ -49,7 +49,7 @@ public class OrderControllerTests {
         order.setId(orderId);
 
         Customer customer = new Customer();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
         customer.setEmail("test@example.com");
         customer.setPhone("88005553535");
 
@@ -83,7 +83,7 @@ public class OrderControllerTests {
         order.setAmount(2);
 
         Customer customer = new Customer();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
         customer.setEmail("test@example.com");
         customer.setPhone("88005553535");
 

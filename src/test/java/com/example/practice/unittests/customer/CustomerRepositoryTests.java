@@ -15,14 +15,14 @@ public class CustomerRepositoryTests {
     @Test
     public void testSaveCustomer() {
         Customer customer = new Customer();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
         customer.setEmail("test@example.com");
         customer.setPhone("88005553535");
 
         Customer savedCustomer = customerRepository.save(customer);
 
         Assertions.assertNotNull(savedCustomer.getId());
-        Assertions.assertEquals("Имя покупателя", savedCustomer.getName());
+        Assertions.assertEquals("NewCustomer", savedCustomer.getName());
         Assertions.assertEquals("test@example.com", savedCustomer.getEmail());
         Assertions.assertEquals("88005553535", savedCustomer.getPhone());
     }
@@ -30,7 +30,7 @@ public class CustomerRepositoryTests {
     @Test
     public void testFindCustomerById() {
         Customer customer = new Customer();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
         customer.setEmail("test@example.com");
         customer.setPhone("88005553535");
 
@@ -39,7 +39,7 @@ public class CustomerRepositoryTests {
         Customer foundCustomer = customerRepository.findById(savedCustomer.getId()).orElse(null);
 
         Assertions.assertNotNull(foundCustomer);
-        Assertions.assertEquals("Имя покупателя", foundCustomer.getName());
+        Assertions.assertEquals("NewCustomer", foundCustomer.getName());
         Assertions.assertEquals("test@example.com", foundCustomer.getEmail());
         Assertions.assertEquals("88005553535", foundCustomer.getPhone());
     }
@@ -47,7 +47,7 @@ public class CustomerRepositoryTests {
     @Test
     public void testDeleteCustomer() {
         Customer customer = new Customer();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
         customer.setEmail("test@example.com");
         customer.setPhone("88005553535");
 

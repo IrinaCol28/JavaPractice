@@ -1,14 +1,7 @@
-package com.example.practice.models;
+package com.example.practice.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "customers")
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CustomerDTO {
     private Long id;
-
     private String name;
     private String email;
     private String phone;

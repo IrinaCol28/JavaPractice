@@ -25,7 +25,7 @@ public class OrderRepositoryTests {
     @Test
     public void testSaveOrder() {
         Customer customer = new Customer();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
         customer.setEmail("test@example.com");
         customer.setPhone("88005553535");
 

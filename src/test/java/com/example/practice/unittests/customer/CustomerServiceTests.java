@@ -32,7 +32,7 @@ public class CustomerServiceTests {
     public void testGetCustomerById() {
         Customer customer = new Customer();
         Long customerId = customer.getId();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
 
         when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
 
@@ -40,7 +40,7 @@ public class CustomerServiceTests {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(customerId, result.getId());
-        Assertions.assertEquals("Имя покупателя", result.getName());
+        Assertions.assertEquals("NewCustomer", result.getName());
 
         verify(customerRepository, times(1)).findById(customerId);
     }
@@ -48,14 +48,14 @@ public class CustomerServiceTests {
     @Test
     public void testSaveCustomer() {
         Customer customer = new Customer();
-        customer.setName("Имя покупателя");
+        customer.setName("NewCustomer");
 
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         Customer result = customerService.saveCustomer(customer);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("Имя покупателя", result.getName());
+        Assertions.assertEquals("NewCustomer", result.getName());
 
         verify(customerRepository, times(1)).save(customer);
     }

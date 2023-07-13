@@ -1,5 +1,7 @@
 package com.example.practice.controllers;
 
+import com.example.practice.dto.OrderDTO;
+import com.example.practice.dto.OrderMapper;
 import com.example.practice.models.Customer;
 import com.example.practice.models.Order;
 import com.example.practice.models.Product;
@@ -16,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,17 +39,18 @@ public class OrderController {
     @Operation(summary = "Get an order by ID")
     @ApiResponse(responseCode = "200", description = "Order found",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Order.class),
+                    schema = @Schema(implementation = OrderDTO.class),
                     examples = @ExampleObject(value = "{\"id\": 1, \"customerId\": 1, \"productId\": 1, \"quantity\": 2}")
             )
     )
     @ApiResponse(responseCode = "404", description = "Order not found")
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrder(@Parameter(description = "ID of the order") @PathVariable Long id) {
+    public ResponseEntity<OrderDTO> getOrder(@Parameter(description = "ID of the order") @PathVariable Long id) {
         Order order = orderService.getOrderById(id);
         if (order != null) {
             LOG.info("Order with ID: '{}' found", id);
-            return ResponseEntity.ok().body(order);
+            OrderDTO orderDTO = OrderMapper.INSTANCE.orderToDTO(order);
+            return ResponseEntity.ok().body(orderDTO);
         } else {
             LOG.info("Order with ID: '{}' not found", id);
             return ResponseEntity.notFound().build();
@@ -59,22 +61,10 @@ public class OrderController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Order created",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Order.class),
+                            schema = @Schema(implementation = OrderDTO.class),
                             examples = @ExampleObject(value = "{\n"
                                     + "  \"id\": 1,\n"
                                     + "  \"amount\": 1,\n"
-                                    + "  \"product\": {\n"
-                                    + "    \"id\": 1,\n"
-                                    + "    \"name\": \"Test\",\n"
-                                    + "    \"quantity\": 5,\n"
-                                    + "    \"cost\": 100\n"
-                                    + "  },\n"
-                                    + "  \"customer\": {\n"
-                                    + "    \"id\": 1,\n"
-                                    + "    \"name\": \"User\",\n"
-                                    + "    \"email\": \"test123@gmail.com\",\n"
-                                    + "    \"phone\": \"88005553535\"\n"
-                                    + "  },\n"
                                     + "  \"productId\": 1,\n"
                                     + "  \"customerId\": 1\n"
                                     + "}")
@@ -83,10 +73,10 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "Order not created")
     })
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Long customerId = order.getCustomerId();
-        Long productId = order.getProductId();
-        int quantity = order.getAmount();
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
+        Long customerId = orderDTO.getCustomerId();
+        Long productId = orderDTO.getProductId();
+        int quantity = orderDTO.getAmount();
         Customer customer = customerService.getCustomerById(customerId);
         if (customer == null) {
             LOG.info("Order not created. Customer with id:'{}' doesn't exist", customerId);
@@ -101,13 +91,16 @@ public class OrderController {
             LOG.info("Order not created. The amount of product is less than required", productId);
             return ResponseEntity.notFound().build();
         }
+        Order order = OrderMapper.INSTANCE.dtoToOrder(orderDTO);
         Order createdOrder = orderService.saveOrder(order);
-        LOG.info("Order created:{}", order.getId());
+        LOG.info("Order created: {}", order.getId());
 
         product.setQuantity(product.getQuantity() - quantity);
         productService.saveProduct(product);
-        LOG.info("The amount of the remaining product has been changed.Current product number:'{}' ", order.getProduct().getQuantity());
-        return ResponseEntity.ok().body(order);
+        LOG.info("The amount of the remaining product has been changed. Current product number: {}", order.getProduct().getQuantity());
+
+        OrderDTO createdOrderDTO = OrderMapper.INSTANCE.orderToDTO(createdOrder);
+        return ResponseEntity.ok().body(createdOrderDTO);
     }
 
     @Operation(summary = "Delete an order by ID")
@@ -117,10 +110,10 @@ public class OrderController {
     public ResponseEntity<Void> deleteOrder(@Parameter(description = "ID of the order") @PathVariable Long id) {
         boolean deleted = orderService.deleteOrder(id);
         if (!deleted) {
-            LOG.info("Order with id:'{}' deleted", id);
+            LOG.info("Order with ID: '{}' deleted", id);
             return ResponseEntity.noContent().build();
         } else {
-            LOG.info("Order with id:'{}' not deleted. Order not found", id);
+            LOG.info("Order with ID: '{}' not deleted", id);
             return ResponseEntity.notFound().build();
         }
     }

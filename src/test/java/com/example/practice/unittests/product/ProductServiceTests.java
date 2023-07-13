@@ -34,7 +34,7 @@ public class ProductServiceTests {
     public void testGetProductById() {
         Product product = new Product();
         Long productId = product.getId();
-        product.setName("Название продукта");
+        product.setName("NewProduct");
         product.setQuantity(10);
         product.setCost(100);
 
@@ -44,7 +44,7 @@ public class ProductServiceTests {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(productId, result.getId());
-        Assertions.assertEquals("Название продукта", result.getName());
+        Assertions.assertEquals("NewProduct", result.getName());
         Assertions.assertEquals(10, result.getQuantity());
         Assertions.assertEquals(100, result.getCost());
 
@@ -54,7 +54,7 @@ public class ProductServiceTests {
     @Test
     public void testSaveProduct() {
         Product product = new Product();
-        product.setName("Название продукта");
+        product.setName("NewProduct");
         product.setQuantity(10);
         product.setCost(100);
 
@@ -63,7 +63,7 @@ public class ProductServiceTests {
         Product result = productService.saveProduct(product);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("Название продукта", result.getName());
+        Assertions.assertEquals("NewProduct", result.getName());
         Assertions.assertEquals(10, result.getQuantity());
         Assertions.assertEquals(100, result.getCost());
 
@@ -83,11 +83,11 @@ public class ProductServiceTests {
     @Test
     public void testGetAllProducts() {
         Product product1 = new Product();
-        product1.setName("Продукт 1");
+        product1.setName("Product 1");
         product1.setQuantity(10);
         product1.setCost(100);
         Product product2 = new Product();
-        product2.setName("Продукт 2");
+        product2.setName("Product 2");
         product2.setQuantity(10);
         product2.setCost(100);
         List<Product> products = new ArrayList<>();
@@ -110,7 +110,7 @@ public class ProductServiceTests {
         int newQuantity = 5;
         Product product = new Product();
         Long productId = product.getId();
-        product.setName("Название продукта");
+        product.setName("NewProduct");
         product.setQuantity(10);
         product.setCost(100);
 

@@ -1,26 +1,20 @@
-package com.example.practice.models;
+package com.example.practice.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "products")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductDTO {
     private Long id;
-
     private String name;
     private int quantity;
+    private double cost;
 
-    public double getCost() {
-        return cost;
+    public ProductDTO() {
     }
 
-    public void setCost(double cost) {
+    public ProductDTO(Long id, String name, int quantity, double cost) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
         this.cost = cost;
     }
-
-    private double cost;
 
     public Long getId() {
         return id;
@@ -44,5 +38,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 }

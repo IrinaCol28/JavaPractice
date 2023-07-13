@@ -1,5 +1,7 @@
 package com.example.practice.controllers;
 
+import com.example.practice.dto.CustomerDTO;
+import com.example.practice.dto.CustomerMapper;
 import com.example.practice.models.Customer;
 import com.example.practice.services.CustomerService;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -18,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/customers")
 public class CustomerController {
     private final CustomerService customerService;
-    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     public CustomerController(CustomerService customerService) {
@@ -28,17 +30,18 @@ public class CustomerController {
     @Operation(summary = "Get a customer by ID")
     @ApiResponse(responseCode = "200", description = "Customer found",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Customer.class),
+                    schema = @Schema(implementation = CustomerDTO.class),
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Test John \", \"email\": \"john.test@gmail.com\", \"phone\": \"88005553535\"}")
             )
     )
     @ApiResponse(responseCode = "404", description = "Customer not found")
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomer(@Parameter(description = "ID of the customer") @PathVariable Long id) {
+    public ResponseEntity<CustomerDTO> getCustomer(@Parameter(description = "ID of the customer") @PathVariable Long id) {
         Customer customer = customerService.getCustomerById(id);
         if (customer != null) {
             LOG.info("Customer with ID: '{}' found", id);
-            return ResponseEntity.ok().body(customer);
+            CustomerDTO customerDTO = CustomerMapper.INSTANCE.customerToDTO(customer);
+            return ResponseEntity.ok().body(customerDTO);
         } else {
             LOG.info("Customer with ID: '{}' not found", id);
             return ResponseEntity.notFound().build();
@@ -48,22 +51,23 @@ public class CustomerController {
     @Operation(summary = "Create a new customer")
     @ApiResponse(responseCode = "201", description = "Customer created",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Customer.class),
+                    schema = @Schema(implementation = CustomerDTO.class),
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Test John \", \"email\": \"john.test@gmail.com\", \"phone\": \"88005553535\"}")
             )
     )
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
+        Customer customer = CustomerMapper.INSTANCE.dtoToCustomer(customerDTO);
         customerService.saveCustomer(customer);
         if (customer != null) {
-            LOG.info("Customer created:{}", customer.getName());
-            LOG.info("Customer created:{}", customer.getId());
-            return ResponseEntity.ok().body(customer);
+            LOG.info("Customer created: {}", customer.getName());
+            LOG.info("Customer ID: {}", customer.getId());
+            CustomerDTO createdCustomerDTO = CustomerMapper.INSTANCE.customerToDTO(customer);
+            return ResponseEntity.ok().body(createdCustomerDTO);
         } else {
             LOG.info("Customer not created");
             return ResponseEntity.notFound().build();
         }
-
     }
 
     @Operation(summary = "Delete a customer by ID")
