@@ -1,4 +1,4 @@
-package com.example.practice.unittests.order;
+package com.example.practice.unit.order;
 
 import com.example.practice.models.Customer;
 import com.example.practice.models.Order;

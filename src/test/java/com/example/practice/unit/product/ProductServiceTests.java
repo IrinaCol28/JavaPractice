@@ -1,4 +1,4 @@
-package com.example.practice.unittests.product;
+package com.example.practice.unit.product;
 
 import com.example.practice.models.Product;
 import com.example.practice.repositories.ProductRepository;
