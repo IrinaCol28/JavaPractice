@@ -2,9 +2,7 @@ package com.example.practice.controllers;
 
 import com.example.practice.dto.OrderDTO;
 import com.example.practice.dto.OrderMapper;
-import com.example.practice.models.Customer;
 import com.example.practice.models.Order;
-import com.example.practice.models.Product;
 import com.example.practice.services.OrderService;
 import com.example.practice.services.ProductService;
 import com.example.practice.services.CustomerService;
