@@ -3,7 +3,9 @@
 
 ## Functions
 ___
-This project implements an order formation system that allows the user to specify a product and a customer to create an order. The system checks the presence of the specified product in the warehouse and the presence of the buyer in the list of buyers.
+This project implements an order formation system that allows the user to specify a product and a customer to create an order. 
+The system checks the presence of the specified product in the warehouse and the presence of the buyer in the list of buyers.
+A scheduler is used to generate orders. The scheduler sends messages about the status of the order to e-mail.
 
 ## Input data
 ___
@@ -42,10 +44,19 @@ Otherwise, an error is returned indicating that there is no product or customer.
 
 ___
 - Postgre SQL
+- Postman
 - Spring Boot
 - Swagger
+- MapStruct
+- ElasticEmail
+- Liquibase
 - Docker
 - TestContainers
+
+Used as an SMTP server [ElasticEmail](https://app.elasticemail.com/api/activity "ElasticEmail").
+
+
+
 
 
 
