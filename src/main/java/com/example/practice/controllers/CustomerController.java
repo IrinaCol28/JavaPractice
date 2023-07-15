@@ -5,22 +5,27 @@ import com.example.practice.dto.CustomerMapper;
 import com.example.practice.models.Customer;
 import com.example.practice.services.CustomerService;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
     private final CustomerService customerService;
-    private static final Logger LOG = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     public CustomerController(CustomerService customerService) {
@@ -39,11 +44,11 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> getCustomer(@Parameter(description = "ID of the customer") @PathVariable Long id) {
         Customer customer = customerService.getCustomerById(id);
         if (customer != null) {
-            LOG.info("Customer with ID: '{}' found", id);
+            log.info("Customer with ID: '{}' found", id);
             CustomerDTO customerDTO = CustomerMapper.INSTANCE.customerToDTO(customer);
             return ResponseEntity.ok().body(customerDTO);
         } else {
-            LOG.info("Customer with ID: '{}' not found", id);
+            log.info("Customer with ID: '{}' not found", id);
             return ResponseEntity.notFound().build();
         }
     }
@@ -60,12 +65,12 @@ public class CustomerController {
         Customer customer = CustomerMapper.INSTANCE.dtoToCustomer(customerDTO);
         customerService.saveCustomer(customer);
         if (customer != null) {
-            LOG.info("Customer created: {}", customer.getName());
-            LOG.info("Customer ID: {}", customer.getId());
+            log.info("Customer created: {}", customer.getName());
+            log.info("Customer ID: {}", customer.getId());
             CustomerDTO createdCustomerDTO = CustomerMapper.INSTANCE.customerToDTO(customer);
             return ResponseEntity.ok().body(createdCustomerDTO);
         } else {
-            LOG.info("Customer not created");
+            log.info("Customer not created");
             return ResponseEntity.notFound().build();
         }
     }
@@ -77,10 +82,10 @@ public class CustomerController {
     public ResponseEntity<Void> deleteCustomer(@Parameter(description = "ID of the customer") @PathVariable Long id) {
         boolean deleted = customerService.deleteCustomer(id);
         if (!deleted) {
-            LOG.info("Customer with ID: '{}' deleted", id);
+            log.info("Customer with ID: '{}' deleted", id);
             return ResponseEntity.noContent().build();
         } else {
-            LOG.info("Customer with ID: '{}' not deleted", id);
+            log.info("Customer with ID: '{}' not deleted", id);
             return ResponseEntity.notFound().build();
         }
     }

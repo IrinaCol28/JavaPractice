@@ -1,19 +1,21 @@
 package com.example.practice.services;
 
-import com.example.practice.controllers.CustomerController;
-import jakarta.mail.*;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.Properties;
 
+@Slf4j
 @Service
 public class EmailService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EmailService.class);
 
     public void sendEmail(String recipientEmail, String subject, String content) {
         String host = "smtp.elasticemail.com";
@@ -40,10 +42,10 @@ public class EmailService {
             message.setSubject(subject);
             message.setText(content);
             Transport.send(message);
-            LOG.info("Email send to {}", recipientEmail);
+            log.info("Email send to {}", recipientEmail);
         } catch (MessagingException e) {
             e.printStackTrace();
-            LOG.info("Email not send");
+           log.info("Email not send");
 
         }
     }
