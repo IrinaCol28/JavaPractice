@@ -28,6 +28,6 @@ public interface ProductMapper {
     default List<ProductDTO> productsToDTOs(List<Product> products) {
         return products.stream()
                 .map(this::productToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
