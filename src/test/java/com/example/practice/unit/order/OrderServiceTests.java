@@ -3,7 +3,6 @@ package com.example.practice.unit.order;
 import com.example.practice.models.Order;
 import com.example.practice.repositories.OrderRepository;
 import com.example.practice.services.OrderService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,22 +10,27 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class OrderServiceTests {
+class OrderServiceTests {
     private OrderService orderService;
 
     @Mock
     private OrderRepository orderRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         orderService = new OrderService(orderRepository);
     }
 
     @Test
-    public void testGetOrderById() {
+    void testGetOrderById() {
         Order order = new Order();
         Long orderId = order.getId();
 
@@ -34,33 +38,33 @@ public class OrderServiceTests {
 
         Order result = orderService.getOrderById(orderId);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(orderId, result.getId());
+        assertNotNull(result);
+        assertEquals(orderId, result.getId());
 
         verify(orderRepository, times(1)).findById(orderId);
     }
 
     @Test
-    public void testSaveOrder() {
+    void testSaveOrder() {
         Order order = new Order();
 
         when(orderRepository.save(order)).thenReturn(order);
 
         Order result = orderService.saveOrder(order);
 
-        Assertions.assertNotNull(result);
+        assertNotNull(result);
 
         verify(orderRepository, times(1)).save(order);
     }
 
     @Test
-    public void testDeleteOrder() {
+    void testDeleteOrder() {
         Order order = new Order();
         Long orderId = order.getId();
 
         boolean result = orderService.deleteOrder(orderId);
 
-        Assertions.assertTrue(!result);
+        assertTrue(!result);
 
         verify(orderRepository, times(1)).deleteById(orderId);
     }

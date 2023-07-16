@@ -8,20 +8,30 @@ import org.mapstruct.factory.Mappers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OrderMapperTest {
+class OrderMapperTest {
     private final OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
 
     @Test
-    public void testOrderToDTO() {
-        Order order = new Order();
-        order.setId(1L);
-        order.setAmount(10);
-        Product product = new Product();
-        product.setId(2L);
-        order.setProduct(product);
-        Customer customer = new Customer();
-        customer.setId(2L);
-        order.setCustomer(customer);
+    void testOrderToDTO() {
+        Product product = Product.builder()
+                .id(2L)
+                .name("Example Product")
+                .quantity(10)
+                .cost(100)
+                .build();
+
+        Customer customer = Customer.builder()
+                .id(2L)
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
+
+        Order order = Order.builder()
+                .amount(10)
+                .product(product)
+                .customer(customer)
+                .build();
 
         OrderDTO orderDTO = orderMapper.orderToDTO(order);
 
@@ -32,12 +42,13 @@ public class OrderMapperTest {
     }
 
     @Test
-    public void testDTOToOrder() {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(1L);
-        orderDTO.setAmount(10);
-        orderDTO.setProductId(2L);
-        orderDTO.setCustomerId(2L);
+    void testDTOToOrder() {
+        OrderDTO orderDTO = OrderDTO.builder()
+                .id(1L)
+                .amount(10)
+                .productId(2L)
+                .customerId(2L)
+                .build();
 
         Order order = orderMapper.dtoToOrder(orderDTO);
 

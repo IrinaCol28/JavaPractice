@@ -12,12 +12,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProductControllerTests {
+class ProductControllerTests {
     @LocalServerPort
     private int port;
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -25,73 +28,76 @@ public class ProductControllerTests {
     private ProductService productService;
 
     @Test
-    public void testGetProduct() {
-        Product product = new Product();
-        Long productId = 1L;
-        product.setId(productId);
-        product.setName("Test");
-        product.setCost(100);
-        product.setQuantity(5);
+    void testGetProduct() {
+        Product product = Product.builder()
+                .id(1L)
+                .name("Test")
+                .quantity(5)
+                .cost(100)
+                .build();
 
-        when(productService.getProductById(productId)).thenReturn(product);
+        when(productService.getProductById(product.getId())).thenReturn(product);
 
-        ResponseEntity<Product> response = restTemplate.getForEntity("/products/{id}", Product.class, productId);
+        ResponseEntity<Product> response = restTemplate.getForEntity("/products/{id}", Product.class, product.getId());
 
-        assert response.getStatusCode() == HttpStatus.OK;
-        assert response.getBody() != null;
-        assert response.getBody().getId().equals(productId);
-        assert response.getBody().getName().equals("Test");
-        assert response.getBody().getCost() == 100;
-        assert response.getBody().getQuantity() == 5;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isEqualTo(product.getId());
+        assertThat(response.getBody().getName()).isEqualTo("Test");
+        assertThat(response.getBody().getCost()).isEqualTo(100);
+        assertThat(response.getBody().getQuantity()).isEqualTo(5);
     }
 
     @Test
-    public void testCreateProduct() {
-        Product product = new Product();
-        product.setName("NewProduct");
-        Long productId = 1L;
-        product.setId(productId);
-        product.setCost(100);
-        product.setQuantity(5);
+    void testCreateProduct() {
+        Product product = Product.builder()
+                .id(1L)
+                .name("Test")
+                .quantity(5)
+                .cost(100)
+                .build();
 
-        Product createdProduct = new Product();
-        createdProduct.setName("NewProduct");
-        createdProduct.setCost(100);
-        createdProduct.setQuantity(5);
+        Product createdProduct = Product.builder()
+                .id(1L)
+                .name("Test")
+                .quantity(5)
+                .cost(100)
+                .build();
 
         when(productService.saveProduct(product)).thenReturn(createdProduct);
 
         ResponseEntity<Product> response = restTemplate.postForEntity("/products", product, Product.class);
 
-        assert response.getStatusCode() == HttpStatus.OK;
-        assert response.getBody() != null;
-        assert response.getBody().getId().equals(1L);
-        assert response.getBody().getName().equals("NewProduct");
-        assert response.getBody().getCost() == 100;
-        assert response.getBody().getQuantity() == 5;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isEqualTo(product.getId());
+        assertThat(response.getBody().getName()).isEqualTo("Test");
+        assertThat(response.getBody().getCost()).isEqualTo(100);
+        assertThat(response.getBody().getQuantity()).isEqualTo(5);
     }
 
     @Test
-    public void testDeleteProduct() {
+    void testDeleteProduct() {
         Long productId = 1L;
 
         when(productService.deleteProduct(productId)).thenReturn(false);
 
         ResponseEntity<Void> response = restTemplate.exchange("/products/{id}", HttpMethod.DELETE, null, Void.class, productId);
 
-        assert response.getStatusCode() == HttpStatus.NO_CONTENT;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
-    public void testUpdateProductQuantity() {
+    void testUpdateProductQuantity() {
         Long productId = 1L;
         int newQuantity = 10;
 
-        Product product = new Product();
-        product.setId(productId);
-        product.setName("Test");
-        product.setCost(100);
-        product.setQuantity(newQuantity);
+        Product product = Product.builder()
+                .id(1L)
+                .name("Test")
+                .quantity(newQuantity)
+                .cost(100)
+                .build();
 
         when(productService.updateProductQuantity(productId, newQuantity)).thenReturn(product);
 
@@ -104,11 +110,11 @@ public class ProductControllerTests {
                 newQuantity
         );
 
-        assert response.getStatusCode() == HttpStatus.OK;
-        assert response.getBody() != null;
-        assert response.getBody().getId().equals(productId);
-        assert response.getBody().getName().equals("Test");
-        assert response.getBody().getCost() == 100;
-        assert response.getBody().getQuantity() == newQuantity;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isEqualTo(productId);
+        assertThat(response.getBody().getName()).isEqualTo("Test");
+        assertThat(response.getBody().getCost()).isEqualTo(100);
+        assertThat(response.getBody().getQuantity()).isEqualTo(newQuantity);
     }
 }

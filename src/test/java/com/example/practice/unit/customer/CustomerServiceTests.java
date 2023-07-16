@@ -12,10 +12,15 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class CustomerServiceTests {
+
+class CustomerServiceTests {
 
     @Mock
     private CustomerRepository customerRepository;
@@ -24,44 +29,49 @@ public class CustomerServiceTests {
     private CustomerService customerService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetCustomerById() {
-        Customer customer = new Customer();
-        Long customerId = customer.getId();
-        customer.setName("NewCustomer");
+    void testGetCustomerById() {
+        Customer customer = Customer.builder()
+                .name("NewCustomer")
+                .email("test@example.com")
+                .phone("88005553535")
+                .build();
 
-        when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
+        when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
 
-        Customer result = customerService.getCustomerById(customerId);
+        Customer result = customerService.getCustomerById(customer.getId());
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(customerId, result.getId());
-        Assertions.assertEquals("NewCustomer", result.getName());
+        assertNotNull(result);
+        assertEquals(customer.getId(), result.getId());
+        assertEquals("NewCustomer", result.getName());
 
-        verify(customerRepository, times(1)).findById(customerId);
+        verify(customerRepository, times(1)).findById(customer.getId());
     }
 
     @Test
-    public void testSaveCustomer() {
-        Customer customer = new Customer();
-        customer.setName("NewCustomer");
+    void testSaveCustomer() {
+        Customer customer = Customer.builder()
+                .name("NewCustomer")
+                .email("test@example.com")
+                .phone("88005553535")
+                .build();
 
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         Customer result = customerService.saveCustomer(customer);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals("NewCustomer", result.getName());
+        assertNotNull(result);
+        assertEquals("NewCustomer", result.getName());
 
         verify(customerRepository, times(1)).save(customer);
     }
 
     @Test
-    public void testDeleteCustomer() {
+    void testDeleteCustomer() {
         Long customerId = 100L;
 
         boolean result = customerService.deleteCustomer(customerId);

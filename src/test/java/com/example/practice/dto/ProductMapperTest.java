@@ -5,20 +5,20 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProductMapperTest {
+ class ProductMapperTest {
     private final ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
 
     @Test
-    public void testProductToDTO() {
-        Product product = new Product();
-        product.setName("Test Product");
-        product.setQuantity(10);
-        product.setCost(100.0);
+    void testProductToDTO() {
+        Product product = Product.builder()
+                .name("Test Product")
+                .quantity(10)
+                .cost(100)
+                .build();
 
         ProductDTO productDTO = productMapper.productToDTO(product);
 
@@ -29,11 +29,12 @@ public class ProductMapperTest {
     }
 
     @Test
-    public void testDTOToProduct() {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setName("Test Product");
-        productDTO.setQuantity(10);
-        productDTO.setCost(100.0);
+     void testDTOToProduct() {
+        ProductDTO productDTO = ProductDTO.builder()
+                .name("Test Product")
+                .quantity(10)
+                .cost(100)
+                .build();
 
         Product product = productMapper.dtoToProduct(productDTO);
 
@@ -44,15 +45,18 @@ public class ProductMapperTest {
     }
 
     @Test
-    public void testProductsToDTOs() {
-        Product product1 = new Product();
-        product1.setName("Product 1");
-        product1.setQuantity(10);
-        product1.setCost(100);
-        Product product2 = new Product();
-        product2.setName("Product 2");
-        product2.setQuantity(10);
-        product2.setCost(100);
+    void testProductsToDTOs() {
+        Product product1 = Product.builder()
+                .name("Product 1")
+                .quantity(10)
+                .cost(100)
+                .build();
+        Product product2 = Product.builder()
+                .name("Product 2")
+                .quantity(20)
+                .cost(200)
+                .build();
+
         List<Product> products = new ArrayList<>();
         products.add(product1);
         products.add(product2);
