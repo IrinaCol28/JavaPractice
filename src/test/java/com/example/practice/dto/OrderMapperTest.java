@@ -8,11 +8,11 @@ import org.mapstruct.factory.Mappers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OrderMapperTest {
+class OrderMapperTest {
     private final OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
 
     @Test
-    public void testOrderToDTO() {
+    void testOrderToDTO() {
         Product product = Product.builder()
                 .id(2L)
                 .name("Example Product")
@@ -42,7 +42,7 @@ public class OrderMapperTest {
     }
 
     @Test
-    public void testDTOToOrder() {
+    void testDTOToOrder() {
         OrderDTO orderDTO = OrderDTO.builder()
                 .id(1L)
                 .amount(10)

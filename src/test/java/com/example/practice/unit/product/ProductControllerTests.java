@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProductControllerTests {
+class ProductControllerTests {
     @LocalServerPort
     private int port;
 
@@ -28,7 +28,7 @@ public class ProductControllerTests {
     private ProductService productService;
 
     @Test
-    public void testGetProduct() {
+    void testGetProduct() {
         Product product = Product.builder()
                 .id(1L)
                 .name("Test")
@@ -49,7 +49,7 @@ public class ProductControllerTests {
     }
 
     @Test
-    public void testCreateProduct() {
+    void testCreateProduct() {
         Product product = Product.builder()
                 .id(1L)
                 .name("Test")
@@ -77,7 +77,7 @@ public class ProductControllerTests {
     }
 
     @Test
-    public void testDeleteProduct() {
+    void testDeleteProduct() {
         Long productId = 1L;
 
         when(productService.deleteProduct(productId)).thenReturn(false);
@@ -88,7 +88,7 @@ public class ProductControllerTests {
     }
 
     @Test
-    public void testUpdateProductQuantity() {
+    void testUpdateProductQuantity() {
         Long productId = 1L;
         int newQuantity = 10;
 

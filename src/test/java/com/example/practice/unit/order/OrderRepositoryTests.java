@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class OrderRepositoryTests {
+class OrderRepositoryTests {
     @Autowired
     private OrderRepository orderRepository;
 
@@ -28,7 +28,7 @@ public class OrderRepositoryTests {
     private ProductRepository productRepository;
 
     @Test
-    public void testSaveOrder() {
+    void testSaveOrder() {
         Customer customer = Customer.builder()
                 .name("John Doe")
                 .email("john.doe@example.com")
@@ -60,7 +60,7 @@ public class OrderRepositoryTests {
     }
 
     @Test
-    public void testFindOrderById() {
+    void testFindOrderById() {
         Order order = Order.builder()
                 .id(1L)
                 .amount(2)
@@ -74,7 +74,7 @@ public class OrderRepositoryTests {
     }
 
     @Test
-    public void testDeleteOrder() {
+    void testDeleteOrder() {
         Order order = Order.builder()
                 .id(1L)
                 .amount(2)

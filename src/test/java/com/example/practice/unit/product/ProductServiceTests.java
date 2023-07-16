@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class ProductServiceTests {
+class ProductServiceTests {
 
     @Mock
     private ProductRepository productRepository;
@@ -28,13 +28,13 @@ public class ProductServiceTests {
     private ProductService productService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         productService = new ProductService(productRepository);
     }
 
     @Test
-    public void testGetProductById() {
+    void testGetProductById() {
         Product product = Product.builder()
                 .name("NewProduct")
                 .quantity(10)
@@ -55,7 +55,7 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void testSaveProduct() {
+    void testSaveProduct() {
         Product product = Product.builder()
                 .name("NewProduct")
                 .quantity(10)
@@ -75,7 +75,7 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void testDeleteProduct() {
+    void testDeleteProduct() {
         Product product = Product.builder()
                 .name("NewProduct")
                 .quantity(10)
@@ -88,7 +88,7 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void testGetAllProducts() {
+    void testGetAllProducts() {
         Product product1 = Product.builder()
                 .name("Product 1")
                 .quantity(10)
@@ -116,7 +116,7 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void testUpdateProductQuantity() {
+    void testUpdateProductQuantity() {
         int newQuantity = 5;
         Product product = Product.builder()
                 .name("NewProduct")

@@ -11,15 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class CustomerRepositoryTests {
+class CustomerRepositoryTests {
     @Autowired
     private CustomerRepository customerRepository;
 
     @Test
-    public void testSaveCustomer() {
+    void testSaveCustomer() {
         Customer customer = Customer.builder()
                 .name("NewCustomer")
                 .email("test@example.com")
@@ -35,7 +34,7 @@ public class CustomerRepositoryTests {
     }
 
     @Test
-    public void testFindCustomerById() {
+    void testFindCustomerById() {
         Customer customer = Customer.builder()
                 .name("NewCustomer")
                 .email("test@example.com")
@@ -53,7 +52,7 @@ public class CustomerRepositoryTests {
     }
 
     @Test
-    public void testDeleteCustomer() {
+    void testDeleteCustomer() {
         Customer customer = Customer.builder()
                 .name("NewCustomer")
                 .email("test@example.com")

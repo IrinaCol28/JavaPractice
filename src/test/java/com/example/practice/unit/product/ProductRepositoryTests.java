@@ -13,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class ProductRepositoryTests {
+class ProductRepositoryTests {
 
     @Autowired
     private ProductRepository productRepository;
 
     @Test
-    public void testSaveProduct() {
+    void testSaveProduct() {
         Product product = Product.builder()
                 .name("NewProduct")
                 .quantity(10)
@@ -35,7 +35,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void testFindProductById() {
+    void testFindProductById() {
         Product product = Product.builder()
                 .name("NewProduct")
                 .quantity(10)
@@ -53,7 +53,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void testDeleteProduct() {
+    void testDeleteProduct() {
         Product product = Product.builder()
                 .name("NewProduct")
                 .quantity(5)

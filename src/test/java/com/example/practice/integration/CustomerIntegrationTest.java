@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @SpringJUnitConfig
 @Testcontainers
-public class CustomerIntegrationTest {
+ class CustomerIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -46,7 +46,7 @@ public class CustomerIntegrationTest {
     }
 
     @Test
-    public void testCreateCustomer() {
+    void testCreateCustomer() {
         CustomerDTO customerDTO = CustomerDTO.builder()
                 .name("Test Customer")
                 .email("test@example.com")
@@ -67,7 +67,7 @@ public class CustomerIntegrationTest {
     }
 
     @Test
-    public void testGetCustomerById() {
+    void testGetCustomerById() {
         Customer customer = Customer.builder()
                 .name("Test Customer")
                 .email("test@example.com")
@@ -88,7 +88,7 @@ public class CustomerIntegrationTest {
     }
 
     @Test
-    public void testDeleteCustomer() {
+    void testDeleteCustomer() {
         Customer customer = Customer.builder()
                 .name("John Doe")
                 .email("john.doe@example.com")

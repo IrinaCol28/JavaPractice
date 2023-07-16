@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class CustomerServiceTests {
+class CustomerServiceTests {
 
     @Mock
     private CustomerRepository customerRepository;
@@ -29,12 +29,12 @@ public class CustomerServiceTests {
     private CustomerService customerService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetCustomerById() {
+    void testGetCustomerById() {
         Customer customer = Customer.builder()
                 .name("NewCustomer")
                 .email("test@example.com")
@@ -53,7 +53,7 @@ public class CustomerServiceTests {
     }
 
     @Test
-    public void testSaveCustomer() {
+    void testSaveCustomer() {
         Customer customer = Customer.builder()
                 .name("NewCustomer")
                 .email("test@example.com")
@@ -71,7 +71,7 @@ public class CustomerServiceTests {
     }
 
     @Test
-    public void testDeleteCustomer() {
+    void testDeleteCustomer() {
         Long customerId = 100L;
 
         boolean result = customerService.deleteCustomer(customerId);

@@ -9,11 +9,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProductMapperTest {
+ class ProductMapperTest {
     private final ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
 
     @Test
-    public void testProductToDTO() {
+    void testProductToDTO() {
         Product product = Product.builder()
                 .name("Test Product")
                 .quantity(10)
@@ -29,7 +29,7 @@ public class ProductMapperTest {
     }
 
     @Test
-    public void testDTOToProduct() {
+     void testDTOToProduct() {
         ProductDTO productDTO = ProductDTO.builder()
                 .name("Test Product")
                 .quantity(10)
@@ -45,7 +45,7 @@ public class ProductMapperTest {
     }
 
     @Test
-    public void testProductsToDTOs() {
+    void testProductsToDTOs() {
         Product product1 = Product.builder()
                 .name("Product 1")
                 .quantity(10)

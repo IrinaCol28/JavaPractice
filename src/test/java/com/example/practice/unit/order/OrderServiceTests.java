@@ -17,20 +17,20 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class OrderServiceTests {
+class OrderServiceTests {
     private OrderService orderService;
 
     @Mock
     private OrderRepository orderRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         orderService = new OrderService(orderRepository);
     }
 
     @Test
-    public void testGetOrderById() {
+    void testGetOrderById() {
         Order order = new Order();
         Long orderId = order.getId();
 
@@ -45,7 +45,7 @@ public class OrderServiceTests {
     }
 
     @Test
-    public void testSaveOrder() {
+    void testSaveOrder() {
         Order order = new Order();
 
         when(orderRepository.save(order)).thenReturn(order);
@@ -58,7 +58,7 @@ public class OrderServiceTests {
     }
 
     @Test
-    public void testDeleteOrder() {
+    void testDeleteOrder() {
         Order order = new Order();
         Long orderId = order.getId();
 

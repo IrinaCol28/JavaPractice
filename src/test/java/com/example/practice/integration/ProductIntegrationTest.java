@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @SpringJUnitConfig
 @Testcontainers
-public class ProductIntegrationTest {
+class ProductIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -37,17 +37,17 @@ public class ProductIntegrationTest {
     private static final DatabaseContainer CONTAINER = DatabaseContainer.getInstance();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         CONTAINER.start();
     }
 
     @AfterAll
-    public static void teardown() {
+    static void teardown() {
         CONTAINER.stop();
     }
 
     @Test
-    public void testCreateProduct() {
+    void testCreateProduct() {
         ProductDTO productDTO = ProductDTO.builder()
                 .name("Test Product")
                 .quantity(5)
@@ -68,7 +68,7 @@ public class ProductIntegrationTest {
     }
 
     @Test
-    public void testGetProductById() {
+    void testGetProductById() {
         Product product = Product.builder()
                 .name("Test Product")
                 .quantity(10)
@@ -89,7 +89,7 @@ public class ProductIntegrationTest {
     }
 
     @Test
-    public void testUpdateProductQuantity() {
+   void testUpdateProductQuantity() {
         Product product = Product.builder()
                 .name("Test Product")
                 .quantity(10)
@@ -116,7 +116,7 @@ public class ProductIntegrationTest {
     }
 
     @Test
-    public void testDeleteProduct() {
+   void testDeleteProduct() {
         Product product = Product.builder()
                 .name("Test Product")
                 .quantity(10)
