@@ -3,7 +3,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
-
     <changeSet id="1" author="prac">
         <createTable tableName="products">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -13,6 +12,7 @@
             <column name="quantity" type="INT"/>
             <column name="cost" type="DOUBLE"/>
         </createTable>
+
     </changeSet>
 
     <changeSet id="2" author="prac">

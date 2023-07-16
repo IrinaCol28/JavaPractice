@@ -22,3 +22,4 @@ public interface CustomerMapper {
     @Mapping(target = "phone", source = "customerDTO.phone")
     Customer dtoToCustomer(CustomerDTO customerDTO);
 }
+

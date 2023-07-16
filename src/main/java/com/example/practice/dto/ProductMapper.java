@@ -7,6 +7,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ProductMapper {
@@ -27,6 +28,7 @@ public interface ProductMapper {
     default List<ProductDTO> productsToDTOs(List<Product> products) {
         return products.stream()
                 .map(this::productToDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 }
+
