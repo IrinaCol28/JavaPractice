@@ -16,7 +16,6 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-
     public void sendEmail(String recipientEmail, String subject, String content) {
         String host = "smtp.elasticemail.com";
         int port = 2525;

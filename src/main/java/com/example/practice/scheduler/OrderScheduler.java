@@ -33,7 +33,6 @@ public class OrderScheduler {
     @Autowired
     private EmailService emailService;
 
-
     @Scheduled(fixedDelay = 50000)
     public void placeOrder() {
 
