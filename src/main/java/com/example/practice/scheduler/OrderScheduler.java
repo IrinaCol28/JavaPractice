@@ -9,6 +9,7 @@ import com.example.practice.services.OrderService;
 import com.example.practice.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,10 @@ public class OrderScheduler {
     @Autowired
     private EmailService emailService;
 
-    @Scheduled(fixedDelay = 50000)
+    @Value("${order.scheduler.fixedDelay}")
+    private String fixedDelayString;
+
+    @Scheduled(fixedDelayString = "${order.scheduler.fixedDelay}")
     public void placeOrder() {
 
         int randomAmount = getRandomAmount();
