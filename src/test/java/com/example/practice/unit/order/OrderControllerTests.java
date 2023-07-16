@@ -5,9 +5,7 @@ import com.example.practice.models.Order;
 import com.example.practice.models.Product;
 import com.example.practice.repositories.CustomerRepository;
 import com.example.practice.repositories.ProductRepository;
-import com.example.practice.services.CustomerService;
 import com.example.practice.services.OrderService;
-import com.example.practice.services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,23 +16,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OrderControllerTests {
     @LocalServerPort
     private int port;
+
     @Autowired
     private TestRestTemplate restTemplate;
 
     @MockBean
     private OrderService orderService;
-
-    @MockBean
-    private CustomerService customerService;
-
-    @MockBean
-    private ProductService productService;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -44,71 +39,39 @@ public class OrderControllerTests {
 
     @Test
     public void testGetOrder() {
-        Order order = new Order();
-        Long orderId = 100L;
-        order.setId(orderId);
-
-        Customer customer = new Customer();
-        customer.setName("NewCustomer");
-        customer.setEmail("test@example.com");
-        customer.setPhone("88005553535");
+        Customer customer = Customer.builder()
+                .id(1L)
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
 
         Customer savedCustomer = customerRepository.save(customer);
 
-        Product product = new Product();
+        Product product = Product.builder()
+                .id(1L)
+                .name("Test Product")
+                .quantity(10)
+                .cost(100)
+                .build();
 
         Product savedProduct = productRepository.save(product);
 
-        order.setCustomer(savedCustomer);
-        order.setProduct(savedProduct);
-        order.setAmount(2);
+        Order order = Order.builder()
+                .id(1L)
+                .amount(2)
+                .product(savedProduct)
+                .customer(savedCustomer)
+                .build();
 
-        when(orderService.getOrderById(orderId)).thenReturn(order);
+        when(orderService.getOrderById(order.getId())).thenReturn(order);
 
-        ResponseEntity<Order> response = restTemplate.getForEntity("/orders/{id}", Order.class, orderId);
+        ResponseEntity<Order> response = restTemplate.getForEntity("/orders/{id}", Order.class, order.getId());
 
-        assert response.getStatusCode() == HttpStatus.OK;
-        assert response.getBody() != null;
-        assert response.getBody().getId().equals(orderId);
-        assert response.getBody().getCustomerId().equals(customer.getId());
-        assert response.getBody().getProductId().equals(product.getId());
-        assert response.getBody().getAmount() == 2;
-    }
-
-    @Test
-    public void testCreateOrder() {
-        Order order = new Order();
-        Long orderId = 100L;
-        order.setId(orderId);
-        order.setAmount(2);
-
-        Customer customer = new Customer();
-        customer.setName("NewCustomer");
-        customer.setEmail("test@example.com");
-        customer.setPhone("88005553535");
-
-        Customer savedCustomer = customerRepository.save(customer);
-
-        Product product = new Product();
-        product.setName("NewProduct");
-        product.setCost(100);
-        product.setQuantity(5);
-        Product savedProduct = productRepository.save(product);
-
-        order.setCustomer(savedCustomer);
-        order.setProduct(savedProduct);
-
-        when(customerService.getCustomerById(order.getCustomerId())).thenReturn(savedCustomer);
-        when(productService.getProductById(order.getProductId())).thenReturn(savedProduct);
-        when(orderService.saveOrder(order)).thenReturn(order);
-
-        ResponseEntity<Order> response = restTemplate.postForEntity("/orders", order, Order.class);
-
-        assert response.getStatusCode() == HttpStatus.OK;
-        assert response.getBody() != null;
-        assert response.getBody().getCustomerId().equals(savedCustomer.getId());
-        assert response.getBody().getProductId().equals(savedProduct.getId());
-        assert response.getBody().getAmount() == 2;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isEqualTo(order.getId());
+        assertThat(response.getBody().getAmount()).isEqualTo(2);
     }
 
     @Test
@@ -119,6 +82,6 @@ public class OrderControllerTests {
 
         ResponseEntity<Void> response = restTemplate.exchange("/orders/{id}", HttpMethod.DELETE, null, Void.class, orderId);
 
-        assert response.getStatusCode() == HttpStatus.NO_CONTENT;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 }

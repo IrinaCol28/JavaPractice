@@ -14,7 +14,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,10 +48,11 @@ public class ProductIntegrationTest {
 
     @Test
     public void testCreateProduct() {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setName("Test Product");
-        productDTO.setCost(100);
-        productDTO.setQuantity(5);
+        ProductDTO productDTO = ProductDTO.builder()
+                .name("Test Product")
+                .quantity(5)
+                .cost(100)
+                .build();
 
         ProductDTO createdProduct = restTemplate.postForObject(
                 "http://localhost:" + port + "/products",
@@ -69,10 +69,11 @@ public class ProductIntegrationTest {
 
     @Test
     public void testGetProductById() {
-        Product product = new Product();
-        product.setName("Test Product");
-        product.setCost(100);
-        product.setQuantity(5);
+        Product product = Product.builder()
+                .name("Test Product")
+                .quantity(10)
+                .cost(100)
+                .build();
         productRepository.save(product);
 
         ProductDTO retrievedProduct = restTemplate.getForObject(
@@ -84,15 +85,16 @@ public class ProductIntegrationTest {
         assertThat(retrievedProduct.getId()).isEqualTo(product.getId());
         assertThat(retrievedProduct.getName()).isEqualTo("Test Product");
         assertThat(retrievedProduct.getCost()).isEqualTo(100);
-        assertThat(retrievedProduct.getQuantity()).isEqualTo(5);
+        assertThat(retrievedProduct.getQuantity()).isEqualTo(10);
     }
 
     @Test
     public void testUpdateProductQuantity() {
-        Product product = new Product();
-        product.setName("Test Product");
-        product.setCost(100);
-        product.setQuantity(5);
+        Product product = Product.builder()
+                .name("Test Product")
+                .quantity(10)
+                .cost(100)
+                .build();
         productRepository.save(product);
 
         int updatedQuantity = 10;
@@ -115,10 +117,11 @@ public class ProductIntegrationTest {
 
     @Test
     public void testDeleteProduct() {
-        Product product = new Product();
-        product.setName("Test Product");
-        product.setCost(100);
-        product.setQuantity(5);
+        Product product = Product.builder()
+                .name("Test Product")
+                .quantity(10)
+                .cost(100)
+                .build();
         productRepository.save(product);
 
         restTemplate.delete("http://localhost:" + port + "/products/" + product.getId());

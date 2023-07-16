@@ -59,22 +59,25 @@ public class OrderIntegrationTest {
 
     @Test
     public void testGetOrderById() {
-        Customer customer = new Customer();
-        customer.setName("Test Customer");
-        customer.setEmail("test@example.com");
-        customer.setPhone("1234567890");
+        Customer customer = Customer.builder()
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
         customerService.saveCustomer(customer);
 
-        Product product = new Product();
-        product.setName("Test Product");
-        product.setCost(100);
-        product.setQuantity(5);
+        Product product = Product.builder()
+                .name("Test Product")
+                .quantity(5)
+                .cost(100)
+                .build();
         productService.saveProduct(product);
 
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setProduct(product);
-        order.setAmount(2);
+        Order order = Order.builder()
+                .amount(2)
+                .product(product)
+                .customer(customer)
+                .build();
         orderService.saveOrder(order);
 
         ResponseEntity<OrderDTO> responseEntity = restTemplate.exchange(
@@ -95,22 +98,25 @@ public class OrderIntegrationTest {
 
     @Test
     public void testDeleteOrder() {
-        Customer customer = new Customer();
-        customer.setName("Test Customer");
-        customer.setEmail("test@example.com");
-        customer.setPhone("1234567890");
+        Customer customer = Customer.builder()
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
         customerService.saveCustomer(customer);
 
-        Product product = new Product();
-        product.setName("Test Product");
-        product.setCost(100);
-        product.setQuantity(5);
+        Product product = Product.builder()
+                .name("Test Product")
+                .quantity(5)
+                .cost(100)
+                .build();
         productService.saveProduct(product);
 
-        Order order = new Order();
-        order.setCustomer(customer);
-        order.setProduct(product);
-        order.setAmount(2);
+        Order order = Order.builder()
+                .amount(2)
+                .product(product)
+                .customer(customer)
+                .build();
         orderService.saveOrder(order);
 
         restTemplate.delete("http://localhost:" + port + "/orders/" + order.getId());

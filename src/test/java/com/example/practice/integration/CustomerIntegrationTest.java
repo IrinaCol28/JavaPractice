@@ -14,9 +14,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,10 +47,11 @@ public class CustomerIntegrationTest {
 
     @Test
     public void testCreateCustomer() {
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setName("Test Customer");
-        customerDTO.setEmail("test@example.com");
-        customerDTO.setPhone("1234567890");
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .name("Test Customer")
+                .email("test@example.com")
+                .phone("1234567890")
+                .build();
 
         CustomerDTO createdCustomer = restTemplate.postForObject(
                 "http://localhost:" + port + "/customers",
@@ -70,10 +68,11 @@ public class CustomerIntegrationTest {
 
     @Test
     public void testGetCustomerById() {
-        Customer customer = new Customer();
-        customer.setName("Test Customer");
-        customer.setEmail("test@example.com");
-        customer.setPhone("1234567890");
+        Customer customer = Customer.builder()
+                .name("Test Customer")
+                .email("test@example.com")
+                .phone("1234567890")
+                .build();
         customerService.saveCustomer(customer);
 
         CustomerDTO retrievedCustomer = restTemplate.getForObject(
@@ -90,10 +89,11 @@ public class CustomerIntegrationTest {
 
     @Test
     public void testDeleteCustomer() {
-        Customer customer = new Customer();
-        customer.setName("Test Customer");
-        customer.setEmail("test@example.com");
-        customer.setPhone("1234567890");
+        Customer customer = Customer.builder()
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
         customerService.saveCustomer(customer);
 
         restTemplate.delete("http://localhost:" + port + "/customers/" + customer.getId());

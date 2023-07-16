@@ -12,12 +12,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CustomerControllerTests {
     @LocalServerPort
     private int port;
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -37,12 +40,12 @@ public class CustomerControllerTests {
 
         ResponseEntity<Customer> response = restTemplate.getForEntity("/customers/{id}", Customer.class, customer.getId());
 
-        assert response.getStatusCode() == HttpStatus.OK;
-        assert response.getBody() != null;
-        assert response.getBody().getId().equals(customer.getId());
-        assert response.getBody().getName().equals("Test John");
-        assert response.getBody().getEmail().equals("john.test@gmail.com");
-        assert response.getBody().getPhone().equals("88005553535");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isEqualTo(customer.getId());
+        assertThat(response.getBody().getName()).isEqualTo("Test John");
+        assertThat(response.getBody().getEmail()).isEqualTo("john.test@gmail.com");
+        assertThat(response.getBody().getPhone()).isEqualTo("88005553535");
     }
 
     @Test
@@ -64,12 +67,12 @@ public class CustomerControllerTests {
 
         ResponseEntity<Customer> response = restTemplate.postForEntity("/customers", customer, Customer.class);
 
-        assert response.getStatusCode() == HttpStatus.OK;
-        assert response.getBody() != null;
-        assert response.getBody().getId().equals(createdCustomer.getId());
-        assert response.getBody().getName().equals("Test John");
-        assert response.getBody().getEmail().equals("john.test@gmail.com");
-        assert response.getBody().getPhone().equals("88005553535");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getId()).isEqualTo(createdCustomer.getId());
+        assertThat(response.getBody().getName()).isEqualTo("Test John");
+        assertThat(response.getBody().getEmail()).isEqualTo("john.test@gmail.com");
+        assertThat(response.getBody().getPhone()).isEqualTo("88005553535");
     }
 
     @Test
@@ -80,6 +83,6 @@ public class CustomerControllerTests {
 
         ResponseEntity<Void> response = restTemplate.exchange("/customers/{id}", HttpMethod.DELETE, null, Void.class, customerId);
 
-        assert response.getStatusCode() == HttpStatus.NO_CONTENT;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 }

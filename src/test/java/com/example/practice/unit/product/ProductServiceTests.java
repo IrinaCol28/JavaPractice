@@ -3,7 +3,6 @@ package com.example.practice.unit.product;
 import com.example.practice.models.Product;
 import com.example.practice.repositories.ProductRepository;
 import com.example.practice.services.ProductService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -32,64 +33,71 @@ public class ProductServiceTests {
 
     @Test
     public void testGetProductById() {
-        Product product = new Product();
-        Long productId = product.getId();
-        product.setName("NewProduct");
-        product.setQuantity(10);
-        product.setCost(100);
+        Product product = Product.builder()
+                .name("NewProduct")
+                .quantity(10)
+                .cost(100)
+                .build();
 
-        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
 
-        Product result = productService.getProductById(productId);
+        Product result = productService.getProductById(product.getId());
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(productId, result.getId());
-        Assertions.assertEquals("NewProduct", result.getName());
-        Assertions.assertEquals(10, result.getQuantity());
-        Assertions.assertEquals(100, result.getCost());
+        assertNotNull(result);
+        assertEquals(product.getId(), result.getId());
+        assertEquals("NewProduct", result.getName());
+        assertEquals(10, result.getQuantity());
+        assertEquals(100, result.getCost());
 
-        verify(productRepository, times(1)).findById(productId);
+        verify(productRepository, times(1)).findById(product.getId());
     }
 
     @Test
     public void testSaveProduct() {
-        Product product = new Product();
-        product.setName("NewProduct");
-        product.setQuantity(10);
-        product.setCost(100);
+        Product product = Product.builder()
+                .name("NewProduct")
+                .quantity(10)
+                .cost(100)
+                .build();
 
         when(productRepository.save(product)).thenReturn(product);
 
         Product result = productService.saveProduct(product);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals("NewProduct", result.getName());
-        Assertions.assertEquals(10, result.getQuantity());
-        Assertions.assertEquals(100, result.getCost());
+        assertNotNull(result);
+        assertEquals("NewProduct", result.getName());
+        assertEquals(10, result.getQuantity());
+        assertEquals(100, result.getCost());
 
         verify(productRepository, times(1)).save(product);
     }
 
     @Test
     public void testDeleteProduct() {
-        Product product = new Product();
-        Long productId = product.getId();
+        Product product = Product.builder()
+                .name("NewProduct")
+                .quantity(10)
+                .cost(100)
+                .build();
 
-        productService.deleteProduct(productId);
+        productService.deleteProduct(product.getId());
 
-        verify(productRepository, times(1)).deleteById(productId);
+        verify(productRepository, times(1)).deleteById(product.getId());
     }
 
     @Test
     public void testGetAllProducts() {
-        Product product1 = new Product();
-        product1.setName("Product 1");
-        product1.setQuantity(10);
-        product1.setCost(100);
-        Product product2 = new Product();
-        product2.setName("Product 2");
-        product2.setQuantity(10);
-        product2.setCost(100);
+        Product product1 = Product.builder()
+                .name("Product 1")
+                .quantity(10)
+                .cost(100)
+                .build();
+        Product product2 = Product.builder()
+                .name("Product 2")
+                .quantity(10)
+                .cost(100)
+                .build();
+
         List<Product> products = new ArrayList<>();
         products.add(product1);
         products.add(product2);
@@ -98,9 +106,9 @@ public class ProductServiceTests {
 
         List<Product> result = productService.getAllProducts();
 
-        Assertions.assertEquals(2, result.size());
-        Assertions.assertEquals(products.get(0), result.get(0));
-        Assertions.assertEquals(products.get(1), result.get(1));
+        assertEquals(2, result.size());
+        assertEquals(products.get(0), result.get(0));
+        assertEquals(products.get(1), result.get(1));
 
         verify(productRepository, times(1)).findAll();
     }
@@ -108,21 +116,21 @@ public class ProductServiceTests {
     @Test
     public void testUpdateProductQuantity() {
         int newQuantity = 5;
-        Product product = new Product();
-        Long productId = product.getId();
-        product.setName("NewProduct");
-        product.setQuantity(10);
-        product.setCost(100);
+        Product product = Product.builder()
+                .name("NewProduct")
+                .quantity(10)
+                .cost(100)
+                .build();
 
-        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        Product result = productService.updateProductQuantity(productId, newQuantity);
+        Product result = productService.updateProductQuantity(product.getId(), newQuantity);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(newQuantity, result.getQuantity());
+        assertNotNull(result);
+        assertEquals(newQuantity, result.getQuantity());
 
-        verify(productRepository, times(1)).findById(productId);
+        verify(productRepository, times(1)).findById(product.getId());
         verify(productRepository, times(1)).save(product);
     }
 }
