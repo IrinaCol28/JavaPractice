@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      DS_URL: jdbc:postgresql://postgres:5432/practice
+      DS_USERNAME: postgres
+      DS_PASSWORD: 0000
+      DB_NAME: practice
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - postgres
+
+    restart: always
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+
+    environment:
+         POSTGRES_DB: practice
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: 0000
+
+    restart: always
+
+volumes:
+  data:
+
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+    <changeSet id="1" author="prac">
+        <createTable tableName="products">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="quantity" type="INT"/>
+            <column name="cost" type="DOUBLE"/>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="2" author="prac">
+        <createTable tableName="customers">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="prac">
+        <createTable tableName="orders">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="INTEGER"/>
+            <column name="product_id" type="BIGINT"/>
+            <column name="customer_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="orders" baseColumnNames="product_id"
+                                 constraintName="fk_orders_product_id" referencedTableName="products"
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="orders" baseColumnNames="customer_id"
+                                 constraintName="fk_orders_customer_id" referencedTableName="customers"
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="4" author="prac">
+        <insert tableName="products">
+            <column name="name" value="Product 1"/>
+            <column name="quantity" value="10"/>
+            <column name="cost" value="100.0"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="Product 2"/>
+            <column name="quantity" value="5"/>
+            <column name="cost" value="200.0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="5" author="prac">
+        <insert tableName="customers">
+            <column name="name" value="Customer 1"/>
+            <column name="email" value="customer1@example.com"/>
+            <column name="phone" value="1234567890"/>
+        </insert>
+        <insert tableName="customers">
+            <column name="name" value="Customer 2"/>
+            <column name="email" value="customer2@example.com"/>
+            <column name="phone" value="9876543210"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="6" author="prac">
+        <insert tableName="orders">
+            <column name="amount" value="2"/>
+            <column name="product_id" value="1"/>
+            <column name="customer_id" value="1"/>
+        </insert>
+        <insert tableName="orders">
+            <column name="amount" value="1"/>
+            <column name="product_id" value="2"/>
+            <column name="customer_id" value="2"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
