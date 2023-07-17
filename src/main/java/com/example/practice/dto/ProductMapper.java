@@ -31,3 +31,4 @@ public interface ProductMapper {
                 .collect(Collectors.toList());
     }
 }
+

@@ -7,9 +7,9 @@ import com.example.practice.services.CustomerService;
 import com.example.practice.services.EmailService;
 import com.example.practice.services.OrderService;
 import com.example.practice.services.ProductService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @EnableScheduling
 @Component
 public class OrderScheduler {
@@ -33,9 +34,10 @@ public class OrderScheduler {
     @Autowired
     private EmailService emailService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(OrderScheduler.class);
+    @Value("${order.scheduler.fixedDelay}")
+    private String fixedDelayString;
 
-    @Scheduled(fixedDelay = 50000)
+    @Scheduled(fixedDelayString = "${order.scheduler.fixedDelay}")
     public void placeOrder() {
 
         int randomAmount = getRandomAmount();
@@ -48,16 +50,16 @@ public class OrderScheduler {
         order.setProduct(randomProduct);
         orderService.saveOrder(order);
         String customerEmail = randomCustomer.getEmail();
-        LOG.info("Order with id:'{}' planner", order.getId());
+        log.info("Order with id:'{}' planner", order.getId());
         String emailSubject = "Уведомление о заказе";
         if (order != null) {
             emailContent = "Ваш заказ успешно поставлен в очередь для выполнения.";
+            log.info("Заказ успешно поставлен в очередь для выполнения");
         } else {
             emailContent = "Ваш заказ невозможно выполнить.";
+            log.info("Заказ невозможно выполнить");
         }
-
         emailService.sendEmail(customerEmail, emailSubject, emailContent);
-
     }
 
     private int getRandomAmount() {

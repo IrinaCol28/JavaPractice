@@ -6,13 +6,18 @@ import com.example.practice.models.Product;
 import com.example.practice.repositories.CustomerRepository;
 import com.example.practice.repositories.OrderRepository;
 import com.example.practice.repositories.ProductRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
-public class OrderRepositoryTests {
+@TestPropertySource(locations = "classpath:application-test.properties")
+class OrderRepositoryTests {
     @Autowired
     private OrderRepository orderRepository;
 
@@ -23,54 +28,63 @@ public class OrderRepositoryTests {
     private ProductRepository productRepository;
 
     @Test
-    public void testSaveOrder() {
-        Customer customer = new Customer();
-        customer.setName("NewCustomer");
-        customer.setEmail("test@example.com");
-        customer.setPhone("88005553535");
+    void testSaveOrder() {
+        Customer customer = Customer.builder()
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
 
         Customer savedCustomer = customerRepository.save(customer);
 
-        Product product = new Product();
+        Product product = Product.builder()
+                .name("Test Product")
+                .quantity(10)
+                .cost(100)
+                .build();
 
         Product savedProduct = productRepository.save(product);
 
-        Order order = new Order();
-        order.setAmount(10);
-        order.setCustomer(savedCustomer);
-        order.setProduct(savedProduct);
+        Order order = Order.builder()
+                .amount(2)
+                .product(savedProduct)
+                .customer(savedCustomer)
+                .build();
 
         Order savedOrder = orderRepository.save(order);
 
-        Assertions.assertNotNull(savedOrder.getId());
-        Assertions.assertEquals(10, savedOrder.getAmount());
-        Assertions.assertEquals(savedCustomer.getId(), savedOrder.getCustomerId());
-        Assertions.assertEquals(savedProduct.getId(), savedOrder.getProductId());
+        assertNotNull(savedOrder.getId());
+        assertEquals(2, savedOrder.getAmount());
+        assertEquals(savedCustomer.getId(), savedOrder.getCustomer().getId());
+        assertEquals(savedProduct.getId(), savedOrder.getProduct().getId());
     }
 
     @Test
-    public void testFindOrderById() {
-        Order order = new Order();
-        order.setAmount(10);
-
+    void testFindOrderById() {
+        Order order = Order.builder()
+                .id(1L)
+                .amount(2)
+                .build();
         Order savedOrder = orderRepository.save(order);
 
         Order foundOrder = orderRepository.findById(savedOrder.getId()).orElse(null);
 
-        Assertions.assertNotNull(foundOrder);
-        Assertions.assertEquals(10, foundOrder.getAmount());
+        assertNotNull(foundOrder);
+        assertEquals(2, foundOrder.getAmount());
     }
 
     @Test
-    public void testDeleteOrder() {
-        Order order = new Order();
-        order.setAmount(10);
+    void testDeleteOrder() {
+        Order order = Order.builder()
+                .id(1L)
+                .amount(2)
+                .build();
 
         Order savedOrder = orderRepository.save(order);
 
         orderRepository.delete(savedOrder);
 
         Order deletedOrder = orderRepository.findById(savedOrder.getId()).orElse(null);
-        Assertions.assertNull(deletedOrder);
+        assertNull(deletedOrder);
     }
 }

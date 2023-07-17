@@ -6,16 +6,17 @@ import org.mapstruct.factory.Mappers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CustomerMapperTest {
+class CustomerMapperTest {
     private final CustomerMapper customerMapper = Mappers.getMapper(CustomerMapper.class);
 
     @Test
-    public void testCustomerToDTO() {
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("John Doe");
-        customer.setEmail("john.doe@example.com");
-        customer.setPhone("1234567890");
+   void testCustomerToDTO() {
+        Customer customer = Customer.builder()
+                .id(1L)
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
 
         CustomerDTO customerDTO = customerMapper.customerToDTO(customer);
 
@@ -26,12 +27,13 @@ public class CustomerMapperTest {
     }
 
     @Test
-    public void testDTOToCustomer() {
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setId(1L);
-        customerDTO.setName("John Doe");
-        customerDTO.setEmail("john.doe@example.com");
-        customerDTO.setPhone("1234567890");
+     void testDTOToCustomer() {
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .id(1L)
+                .name("John Doe")
+                .email("john.doe@example.com")
+                .phone("123-456-7890")
+                .build();
 
         Customer customer = customerMapper.dtoToCustomer(customerDTO);
 

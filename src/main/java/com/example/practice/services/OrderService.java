@@ -1,7 +1,6 @@
 package com.example.practice.services;
 
 import com.example.practice.models.Order;
-import com.example.practice.models.Product;
 import com.example.practice.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

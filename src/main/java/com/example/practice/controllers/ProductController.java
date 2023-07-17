@@ -10,19 +10,25 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
-    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -41,11 +47,11 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProduct(@Parameter(description = "ID of the product") @PathVariable Long id) {
         Product product = productService.getProductById(id);
         if (product != null) {
-            LOG.info("Product with ID: '{}' found", id);
+            log.info("Product with ID: '{}' found", id);
             ProductDTO productDTO = ProductMapper.INSTANCE.productToDTO(product);
             return ResponseEntity.ok().body(productDTO);
         } else {
-            LOG.info("Product with ID: '{}' not found", id);
+            log.info("Product with ID: '{}' not found", id);
             return ResponseEntity.notFound().build();
         }
     }
@@ -62,11 +68,11 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         if (products != null) {
-            LOG.info("Products found");
+            log.info("Products found");
             List<ProductDTO> productDTOs = ProductMapper.INSTANCE.productsToDTOs(products);
             return ResponseEntity.ok().body(productDTOs);
         } else {
-            LOG.info("Products not found");
+            log.info("Products not found");
             return ResponseEntity.notFound().build();
         }
     }
@@ -84,12 +90,12 @@ public class ProductController {
         Product product = ProductMapper.INSTANCE.dtoToProduct(productDTO);
         productService.saveProduct(product);
         if (product != null) {
-            LOG.info("Product created: {}", product.getName());
-            LOG.info("Product ID: {}", product.getId());
+           log.info("Product created: {}", product.getName());
+            log.info("Product ID: {}", product.getId());
             ProductDTO createdProductDTO = ProductMapper.INSTANCE.productToDTO(product);
             return ResponseEntity.ok().body(createdProductDTO);
         } else {
-            LOG.info("Product not created");
+            log.info("Product not created");
             return ResponseEntity.notFound().build();
         }
     }
@@ -101,10 +107,10 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@Parameter(description = "ID of the product") @PathVariable Long id) {
         boolean deleted = productService.deleteProduct(id);
         if (!deleted) {
-            LOG.info("Product with ID: '{}' deleted", id);
+            log.info("Product with ID: '{}' deleted", id);
             return ResponseEntity.noContent().build();
         } else {
-            LOG.info("Product with ID: '{}' not deleted", id);
+            log.info("Product with ID: '{}' not deleted", id);
             return ResponseEntity.notFound().build();
         }
     }
@@ -123,11 +129,11 @@ public class ProductController {
             @Parameter(description = "New quantity value") @RequestParam int quantity) {
         Product product = productService.updateProductQuantity(id, quantity);
         if (product != null) {
-            LOG.info("Update product quantity");
+            log.info("Update product quantity");
             ProductDTO updatedProductDTO = ProductMapper.INSTANCE.productToDTO(product);
             return ResponseEntity.ok().body(updatedProductDTO);
         } else {
-            LOG.info("Update product quantity canceled. Product not found");
+           log.info("Update product quantity canceled. Product not found");
             return ResponseEntity.notFound().build();
         }
     }

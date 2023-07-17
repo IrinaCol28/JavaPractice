@@ -16,8 +16,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    // Методы сервиса для выполнения операций с товарами
-
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
