@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 services:
   app:
     build:
@@ -7,8 +7,8 @@ services:
 
     environment:
       DS_URL: jdbc:postgresql://postgres:5432/practice
-      DS_USERNAME: postgres
-      DS_PASSWORD: 0000
+      DS_USERNAME_FILE: /run/secrets/db_username
+      DS_PASSWORD_FILE: /run/secrets/db_password
       DB_NAME: practice
 
     ports:
@@ -26,15 +26,27 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
 
+    secrets:
+      - db_username
+      - db_password
+
     environment:
-         POSTGRES_DB: practice
-         POSTGRES_USER: postgres
-         POSTGRES_PASSWORD: 0000
+      POSTGRES_DB: practice
+      POSTGRES_USER_FILE: /run/secrets/db_username
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
 
     restart: always
 
+secrets:
+  db_username:
+    file: ./db_username.txt
+  db_password:
+    file: ./db_password.txt
+
 volumes:
   data:
+
+
 
 
 
